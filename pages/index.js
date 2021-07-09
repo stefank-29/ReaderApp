@@ -5,6 +5,7 @@ import FormStyles from '../styles/FormStyles';
 import styled from 'styled-components';
 import ButtonStyles from '../styles/ButtonStyles';
 import { FaSearch } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const HomeStyles = styled.main`
     width: 100%;
@@ -13,8 +14,10 @@ const HomeStyles = styled.main`
 `;
 
 export default function HomePage() {
-    const [searchQuery, setSearchQuery] = useState();
+    const [searchQuery, setSearchQuery] = useState('');
     const [disabledBtn, setDisabledBtn] = useState(true);
+
+    const router = useRouter();
 
     function handleChange(e) {
         let query = e.target.value;
@@ -26,7 +29,11 @@ export default function HomePage() {
         setSearchQuery(query);
     }
 
-    function handleSubmit() {}
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        router.push(`/search/${searchQuery}?page=1`);
+    }
 
     return (
         <>

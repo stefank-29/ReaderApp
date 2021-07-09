@@ -13,7 +13,7 @@ const FormStyles = styled.form`
         padding: 1.5rem;
         font-size: 1.6rem;
         outline: none;
-        background-color: #fefefeaa;
+        background-color: #fefefecc;
         ::placeholder {
             font-weight: 700;
         }
