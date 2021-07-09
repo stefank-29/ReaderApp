@@ -13,8 +13,8 @@ const HeaderStyles = styled.header`
         padding: 3.5rem 5rem 4.5rem 0;
         .logo {
             position: relative;
-            width: 12rem;
-            height: 3.5rem;
+            width: 7rem;
+            height: 7rem;
             cursor: pointer;
         }
         .menu {

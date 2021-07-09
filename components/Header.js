@@ -10,7 +10,7 @@ export default function Header() {
                 <Link href="/">
                     <a className="logo">
                         <Image
-                            src="/logo.svg"
+                            src="/book-logo.png"
                             alt="Library app"
                             layout="fill"
                         />

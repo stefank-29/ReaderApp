@@ -26,10 +26,14 @@ export default function Card({
                     </div>
                     <div className="book-info">
                         <p className="title">{title}</p>
-                        <div className="author">
-                            <span>by </span>
-                            <span className="name">{authorName}</span>
-                        </div>
+                        {authorName && (
+                            <div className="author">
+                                <span>by </span>
+                                <span className="name">
+                                    {authorName?.slice(0, 3).join(', ')}
+                                </span>
+                            </div>
+                        )}
                         <div className="published">
                             <span>First published in </span>
                             <span>{publishYear}</span>
@@ -43,9 +47,9 @@ export default function Card({
 
 Card.propTypes = {
     title: PropTypes.string,
-    authorKey: PropTypes.string,
-    authorName: PropTypes.string,
+    authorKey: PropTypes.array,
+    authorName: PropTypes.array,
     coverUrl: PropTypes.string,
-    publishYear: PropTypes.string,
+    publishYear: PropTypes.number,
     bookKey: PropTypes.string,
 };

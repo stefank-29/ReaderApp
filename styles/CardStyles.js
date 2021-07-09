@@ -49,10 +49,13 @@ const CardStyles = styled.div`
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 1rem;
+            padding: 1.5rem;
             .title {
+                height: 4rem;
+                line-height: 2rem;
                 margin: 0.5rem 0 auto;
                 font-size: 1.6rem;
+                overflow: hidden;
                 font-weight: 500;
             }
             .author {
