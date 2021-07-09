@@ -2,6 +2,7 @@ import CardStyles from '../styles/CardStyles';
 import Image from 'next/image';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import Link from 'next/link';
+import { PropTypes } from 'prop-types';
 
 export default function Card({
     title,
@@ -39,3 +40,12 @@ export default function Card({
         </Link>
     );
 }
+
+Card.propTypes = {
+    title: PropTypes.string,
+    authorKey: PropTypes.string,
+    authorName: PropTypes.string,
+    coverUrl: PropTypes.string,
+    publishYear: PropTypes.string,
+    bookKey: PropTypes.string,
+};

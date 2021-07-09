@@ -2,10 +2,11 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { PropTypes } from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
 import Card from '../../components/Card';
+import Pagination from '../../components/Pagination';
+import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -26,6 +27,24 @@ export default function SearchPage({ books, totalCount }) {
     const [numOfPages, setNumOfPages] = useState();
 
     const router = useRouter();
+
+    useEffect(() => {
+        const pagesNum = Math.ceil(totalCount / 100);
+        setNumOfPages(pagesNum);
+    }, []);
+
+    useEffect(() => {
+        if (router.query.page === undefined) {
+            setPage(1);
+        } else {
+            const pageNum = parseInt(router.query.page);
+            if (pageNum > numOfPages) {
+                setPage(numOfPages);
+            } else {
+                setPage(pageNum);
+            }
+        }
+    }, [router.asPath]);
 
     return (
         <>
@@ -57,6 +76,7 @@ export default function SearchPage({ books, totalCount }) {
                                 </Card>
                             ))}
                         </BooksStyles>
+                        <Pagination numOfPages={numOfPages} currPage={page} />
                     </>
                 ) : (
                     <p>No results</p>
