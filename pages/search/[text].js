@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import styled from 'styled-components';
 import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
+import Card from '../../components/Card';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -29,7 +30,7 @@ export default function SearchPage({ books, totalCount }) {
     return (
         <>
             <Head>
-                <title> - search </title>
+                <title>{router.query.text} - search </title>
             </Head>
             <SearchPageStyles>
                 {books.length > 0 ? (
@@ -38,8 +39,22 @@ export default function SearchPage({ books, totalCount }) {
                             <p className="total">{`${totalCount} results`}</p>
                         </SearchHeaderStyles>
                         <BooksStyles>
-                            {books.map((book, index) => (
-                                <div key={index}>a</div>
+                            {books.map((book) => (
+                                <Card
+                                    authorKey={book.author_key}
+                                    authorName={book.author_name}
+                                    bookKey={book.key}
+                                    coverUrl={
+                                        book.cover_i !== undefined
+                                            ? `http://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
+                                            : '/open-book.png'
+                                    }
+                                    key={book.key}
+                                    publishYear={book.first_publish_year}
+                                    title={book.title}
+                                >
+                                    a
+                                </Card>
                             ))}
                         </BooksStyles>
                     </>
@@ -52,14 +67,14 @@ export default function SearchPage({ books, totalCount }) {
 }
 
 export async function getServerSideProps(context) {
-    const { data } = await axios.get(
+    const { data: books } = await axios.get(
         `http://openlibrary.org/search.json?q=${encodeURI(
             context.params.text
         )}&page=${context.query.page}`
     );
 
     return {
-        props: { books: data.docs, totalCount: data.num_found },
+        props: { books: books.docs, totalCount: books.num_found },
     };
 }
 
