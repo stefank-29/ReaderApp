@@ -10,6 +10,7 @@ import { InfoStyles } from '../../styles/InfoStyles';
 import ButtonStyles from '../../styles/ButtonStyles';
 import AuthorInfoStyles from '../../styles/AuthorInfo';
 import Carousel from '../../components/Carousel';
+import Link from 'next/link';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -82,6 +83,15 @@ export default function AuthorDetails({
                                         </div>
                                     )}
                                 </div>
+                                {wikipedia && (
+                                    <Link href={wikipedia}>
+                                        <a target="_blank">
+                                            <ButtonStyles>
+                                                <span>Read more</span>
+                                            </ButtonStyles>
+                                        </a>
+                                    </Link>
+                                )}
                             </div>
                         </div>
                         <div className="bio">{bio}</div>
@@ -107,8 +117,6 @@ export async function getServerSideProps(context) {
         `https://openlibrary.org/authors/${context.params.id}/works.json`
     );
 
-    //image
-
     return {
         props: {
             name:
@@ -125,7 +133,12 @@ export async function getServerSideProps(context) {
                 authorData?.wikipedia !== undefined
                     ? authorData?.wikipedia
                     : null,
-            bio: authorData?.bio !== undefined ? authorData?.bio.value : null,
+            bio:
+                authorData?.bio !== undefined
+                    ? authorData?.bio.value !== undefined
+                        ? authorData?.bio.value
+                        : authorData?.bio
+                    : null,
             birthDate:
                 authorData?.birth_date !== undefined
                     ? authorData?.birth_date
@@ -136,9 +149,10 @@ export async function getServerSideProps(context) {
 }
 
 AuthorDetails.propTypes = {
-    id: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.object,
-    authors: PropTypes.array,
+    bio: PropTypes.string,
+    birthDate: PropTypes.string,
+    name: PropTypes.string,
     imageUrl: PropTypes.string,
+    wikipedia: PropTypes.string,
+    works: PropTypes.array,
 };
