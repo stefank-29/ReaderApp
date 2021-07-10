@@ -38,8 +38,16 @@ const ListsPageStyles = styled.main`
 
 export default function Lists() {
     const [modalVisible, setIsModalVisible] = useState(false);
+    const [inputName, setInputName] = useState('');
 
     const { createList } = useBooks();
+
+    function handleNameSubmit(e) {
+        e.preventDefault();
+
+        createList(inputName);
+        setIsModalVisible(false);
+    }
 
     return (
         <ListsPageStyles>
@@ -55,11 +63,13 @@ export default function Lists() {
                 isOpen={modalVisible}
                 message="Insert new list name"
             >
-                <FormStyles>
+                <FormStyles onSubmit={handleNameSubmit}>
                     <input
                         type="text"
                         className="search-input"
                         placeholder="List name"
+                        value={inputName}
+                        onChange={(e) => setInputName(e.target.value)}
                     />
                     <ButtonStyles>Add</ButtonStyles>
                 </FormStyles>
