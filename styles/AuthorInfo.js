@@ -74,7 +74,7 @@ const AuthorInfoStyles = styled.div`
     }
     .bio {
         padding-top: 4rem;
-        font-size: 2.3rem;
+        font-size: 2rem;
         white-space: normal;
     }
     .show-more {

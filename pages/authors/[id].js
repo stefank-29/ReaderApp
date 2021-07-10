@@ -9,6 +9,7 @@ import ImageStyles from '../../styles/ImageStyles';
 import { InfoStyles } from '../../styles/InfoStyles';
 import ButtonStyles from '../../styles/ButtonStyles';
 import AuthorInfoStyles from '../../styles/AuthorInfo';
+import Carousel from '../../components/Carousel';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -80,14 +81,6 @@ export default function AuthorDetails({
                                             <span>{birthDate}</span>
                                         </div>
                                     )}
-                                    {/* {publishDate && (
-                                        <div className="author">
-                                            <span className="label">
-                                                Published:
-                                            </span>
-                                            <span>{publishDate}</span>
-                                        </div>
-                                    )} */}
                                 </div>
                             </div>
                         </div>
@@ -100,6 +93,7 @@ export default function AuthorDetails({
                     )}
                 </AuthorInfoStyles>
             </DetailsPageStyles>
+            <Carousel items={works} title={`${name}'s works:`} />
         </>
     );
 }
@@ -115,11 +109,14 @@ export async function getServerSideProps(context) {
 
     //image
 
-    console.log(authorData);
-
     return {
         props: {
-            name: authorData.personal_name,
+            name:
+                authorData?.personal_name !== undefined
+                    ? authorData.personal_name
+                    : authorData?.name !== undefined
+                    ? authorData?.name
+                    : null,
             imageUrl:
                 authorData?.photos !== undefined
                     ? `http://covers.openlibrary.org/b/id/${authorData?.photos[0]}.jpg`

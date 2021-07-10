@@ -34,10 +34,12 @@ export default function Card({
                                 </span>
                             </div>
                         )}
-                        <div className="published">
-                            <span>First published in </span>
-                            <span>{publishYear}</span>
-                        </div>
+                        {publishYear && (
+                            <div className="published">
+                                <span>First published in </span>
+                                <span>{publishYear}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </CardStyles>
