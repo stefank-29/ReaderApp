@@ -64,8 +64,8 @@ export default function SearchPage({ books, totalCount }) {
                                     authorName={book.author_name}
                                     bookKey={book.key}
                                     coverUrl={
-                                        book.cover_i !== undefined
-                                            ? `http://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
+                                        book.cover_edition_key !== undefined
+                                            ? `http://covers.openlibrary.org/b/olid/${book.cover_edition_key}.jpg`
                                             : '/open-book.png'
                                     }
                                     key={book.key}

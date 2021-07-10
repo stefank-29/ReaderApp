@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import ImageStyles from '../../styles/ImageStyles';
 import { InfoStyles } from '../../styles/InfoStyles';
 import ButtonStyles from '../../styles/ButtonStyles';
-import Link from 'next/link';
+import AuthorInfoStyles from '../../styles/AuthorInfo';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -16,13 +16,13 @@ const DetailsPageStyles = styled.div`
     padding: 4rem 0;
 `;
 
-export default function BookDetails({
-    id,
-    title,
-    description,
-    authors,
+export default function AuthorDetails({
+    bio,
+    birthDate,
+    name,
     imageUrl,
-    publishDate,
+    wikipedia,
+    works,
 }) {
     const [isOverflowing, setIsOverflowing] = useState(false);
     const [showMore, setShowMore] = useState(false);
@@ -42,7 +42,7 @@ export default function BookDetails({
     return (
         <>
             <Head>
-                <title>{`${title} | My library`}</title>
+                <title>{`${name} | My library`}</title>
             </Head>
             <DetailsPageStyles>
                 <ImageStyles>
@@ -55,7 +55,7 @@ export default function BookDetails({
                         />
                     </div>
                 </ImageStyles>
-                <InfoStyles
+                <AuthorInfoStyles
                     ref={detailsRef}
                     maxHeight={showMore ? 'auto' : '70rem'}
                     shadow={
@@ -67,101 +67,78 @@ export default function BookDetails({
                 >
                     <div className="details-container">
                         <div className="header">
-                            <div className="title">{title}</div>
+                            <div className="title">{name}</div>
                         </div>
                         <div className="author-info">
                             <div className="container-flex">
                                 <div className="author-container">
-                                    {authors && (
+                                    {birthDate && (
                                         <div className="author">
                                             <span className="label">
-                                                Authors:{' '}
+                                                Birth:{' '}
                                             </span>
-                                            {authors.map((author, index) => (
-                                                <Link
-                                                    href={author.id}
-                                                    key={author.id}
-                                                >
-                                                    <a>
-                                                        <span>
-                                                            {`${author.name}${
-                                                                index <
-                                                                authors.length -
-                                                                    1
-                                                                    ? ', '
-                                                                    : ''
-                                                            }`}
-                                                        </span>
-                                                    </a>
-                                                </Link>
-                                            ))}
+                                            <span>{birthDate}</span>
                                         </div>
                                     )}
-                                    {publishDate && (
+                                    {/* {publishDate && (
                                         <div className="author">
                                             <span className="label">
                                                 Published:
                                             </span>
                                             <span>{publishDate}</span>
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                         </div>
-                        <div className="description">{description}</div>
+                        <div className="bio">{bio}</div>
                     </div>
                     {isOverflowing && (
                         <div className="show-more" onClick={handleOverflow}>
                             <span>SHOW MORE</span>
                         </div>
                     )}
-                </InfoStyles>
+                </AuthorInfoStyles>
             </DetailsPageStyles>
         </>
     );
 }
 
 export async function getServerSideProps(context) {
-    const { data: book } = await axios.get(
-        `https://openlibrary.org/works/${context.params.id}.json`
+    const { data: authorData } = await axios.get(
+        `https://openlibrary.org/authors/${context.params.id}.json`
     );
 
-    const authorNames = [];
+    const { data: authorWorks } = await axios.get(
+        `https://openlibrary.org/authors/${context.params.id}/works.json`
+    );
 
-    for (let i = 0; i < book?.authors?.length; i++) {
-        const { data: author } = await axios.get(
-            `https://openlibrary.org${book.authors[i]?.author?.key}.json`
-        );
-        authorNames.push({
-            name: author.name,
-            id: book.authors[i]?.author?.key,
-        });
-    }
+    //image
+
+    console.log(authorData);
 
     return {
         props: {
-            id: book.key,
-            title: book.title,
-            description:
-                typeof book.description === 'string'
-                    ? book.description
-                    : typeof book.description === 'undefined'
-                    ? null
-                    : book.description.value,
-            authors: authorNames,
+            name: authorData.personal_name,
             imageUrl:
-                book?.covers !== undefined
-                    ? `http://covers.openlibrary.org/b/id/${book?.covers[0]}.jpg`
-                    : '/open-book.png',
-            publishDate:
-                book.first_publish_date === undefined
-                    ? null
-                    : book.first_publish_date,
+                authorData?.photos !== undefined
+                    ? `http://covers.openlibrary.org/b/id/${authorData?.photos[0]}.jpg`
+                    : '/writer.png',
+            wikipedia:
+                authorData?.wikipedia !== undefined
+                    ? authorData?.wikipedia
+                    : null,
+            bio: authorData?.bio !== undefined ? authorData?.bio.value : null,
+            birthDate:
+                authorData?.birth_date !== undefined
+                    ? authorData?.birth_date
+                    : null,
+            works: authorWorks.entries,
         },
     };
 }
 
-BookDetails.propTypes = {
+AuthorDetails.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.object,
