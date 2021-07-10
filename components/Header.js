@@ -17,14 +17,6 @@ export default function Header() {
                     </a>
                 </Link>
                 <div className="menu">
-                    <Link href="/add">
-                        <a className="link">
-                            <div className="item">
-                                <FaPlus className="icon" />
-                                <span className="label">Add book</span>
-                            </div>
-                        </a>
-                    </Link>
                     <Link href="/lists">
                         <a className="link">
                             <div className="item">
