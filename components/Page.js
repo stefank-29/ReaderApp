@@ -1,6 +1,12 @@
 import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
+import Modal from './Modal';
+import FormStyles from '../styles/FormStyles';
+import ButtonStyles from '../styles/ButtonStyles';
+import { useState } from 'react';
+import { useBooks } from '../lib/booksState';
+import { useModal } from '../lib/modalState';
 
 const GlobalStyles = createGlobalStyle`
     html{
@@ -53,11 +59,30 @@ const InnerStyles = styled.div`
 `;
 
 export default function Page({ children }) {
+    const { modalVisible, inputName, handleNameSubmit, setInputName } =
+        useModal();
+
     return (
         <div>
             <GlobalStyles />
-            <Header/>
+            <Header />
             <InnerStyles>{children}</InnerStyles>
+            <Modal
+                closeModal={() => setIsModalVisible(false)}
+                isOpen={modalVisible}
+                message="Insert new list name"
+            >
+                <FormStyles onSubmit={handleNameSubmit}>
+                    <input
+                        type="text"
+                        className="search-input"
+                        placeholder="List name"
+                        value={inputName}
+                        onChange={(e) => setInputName(e.target.value)}
+                    />
+                    <ButtonStyles>Add</ButtonStyles>
+                </FormStyles>
+            </Modal>
         </div>
     );
 }

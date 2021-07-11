@@ -47,6 +47,7 @@ export default function Lists() {
 
         createList(inputName);
         setIsModalVisible(false);
+        setInputName('');
     }
 
     return (

@@ -33,7 +33,9 @@ const HeaderStyles = styled.header`
                 cursor: pointer;
                 .icon {
                     margin-right: 0.5rem;
-                    margin-top: 0.2rem;
+                    &.down {
+                        margin-top: 0.2rem;
+                    }
                 }
                 .label {
                     :hover {

@@ -11,35 +11,41 @@ export default function Card({
     coverUrl,
     publishYear,
     bookKey,
+    onFavClick,
 }) {
     return (
         <Link href={`${bookKey}`} passHref>
             <CardStyles>
                 <div className="container">
+                    <FaRegBookmark className="bookmark" onClick={onFavClick} />
                     <div className="image-container">
                         <Image
                             src={coverUrl}
-                            alt="article image"
+                            alt="book image"
                             layout="fill"
                             className="image"
                         />
                     </div>
                     <div className="book-info">
                         <p className="title">{title}</p>
-                        {authorName && (
-                            <div className="author">
-                                <span>by </span>
-                                <span className="name">
-                                    {authorName?.slice(0, 3).join(', ')}
-                                </span>
-                            </div>
-                        )}
-                        {publishYear && (
-                            <div className="published">
-                                <span>First published in </span>
-                                <span>{publishYear}</span>
-                            </div>
-                        )}
+                        <div className="author">
+                            {authorName && (
+                                <>
+                                    <span>by </span>
+                                    <span className="name">
+                                        {authorName?.slice(0, 3).join(', ')}
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                        <div className="published">
+                            {publishYear && (
+                                <>
+                                    <span>First published in </span>
+                                    <span>{publishYear}</span>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </CardStyles>

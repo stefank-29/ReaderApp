@@ -5,8 +5,11 @@ import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from '../../components/Card';
+import Modal from '../../components/Modal';
 import Pagination from '../../components/Pagination';
 import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
+import FormStyles from '../../styles/FormStyles';
+import ButtonStyles from '../../styles/ButtonStyles';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -23,16 +26,23 @@ const BooksStyles = styled.div`
 `;
 
 export default function SearchPage({ books, totalCount }) {
+    //pages
     const [page, setPage] = useState(1);
     const [numOfPages, setNumOfPages] = useState();
 
+    // modal
+    const [modalVisible, setIsModalVisible] = useState(false);
+    const [inputName, setInputName] = useState('');
+
     const router = useRouter();
 
+    // calculate num of pages
     useEffect(() => {
         const pagesNum = Math.ceil(totalCount / 100);
         setNumOfPages(pagesNum);
     }, []);
 
+    // current page
     useEffect(() => {
         if (router.query.page === undefined) {
             setPage(1);
@@ -71,12 +81,32 @@ export default function SearchPage({ books, totalCount }) {
                                     key={book.key}
                                     publishYear={book.first_publish_year}
                                     title={book.title}
-                                >
-                                    a
-                                </Card>
+                                    onFavClick={(e) => {
+                                        e.preventDefault();
+                                        setIsModalVisible(true);
+                                    }}
+                                />
                             ))}
                         </BooksStyles>
                         <Pagination numOfPages={numOfPages} currPage={page} />
+                        <Modal
+                            closeModal={() => setIsModalVisible(false)}
+                            isOpen={modalVisible}
+                            message="Insert new list name"
+                        >
+                            <FormStyles>
+                                <input
+                                    type="text"
+                                    className="search-input"
+                                    placeholder="List name"
+                                    value={inputName}
+                                    onChange={(e) =>
+                                        setInputName(e.target.value)
+                                    }
+                                />
+                                <ButtonStyles>Add</ButtonStyles>
+                            </FormStyles>
+                        </Modal>
                     </>
                 ) : (
                     <p>No results</p>

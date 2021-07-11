@@ -11,6 +11,7 @@ const ModalStyles = styled.div`
     align-items: center;
     justify-content: center;
     transition: all 0.5s ease-in-out;
+    z-index: 3;
     .container {
         position: relative;
         width: 50rem;

@@ -23,7 +23,7 @@ const CardStyles = styled.div`
             font-size: 2rem;
             z-index: 10;
             user-select: none;
-            z-index: 5;
+            z-index: 2;
             :hover {
                 color: var(--red);
             }
