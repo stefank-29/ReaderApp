@@ -7,7 +7,7 @@ const ModalStyles = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
     align-items: center;
     justify-content: center;
     transition: all 0.5s ease-in-out;

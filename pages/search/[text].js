@@ -3,13 +3,18 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 import styled from 'styled-components';
 import Card from '../../components/Card';
+import Dropdown from '../../components/Dropdown';
 import Modal from '../../components/Modal';
 import Pagination from '../../components/Pagination';
-import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
-import FormStyles from '../../styles/FormStyles';
+import { useBooks } from '../../lib/booksState';
 import ButtonStyles from '../../styles/ButtonStyles';
+import FormStyles from '../../styles/FormStyles';
+import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
+import { SelectBtn } from '../../styles/FormStyles';
+import SelectStyles from '../../styles/SelectStyles';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -26,6 +31,11 @@ const BooksStyles = styled.div`
 `;
 
 export default function SearchPage({ books, totalCount }) {
+    const { lists, addBook } = useBooks();
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [selectedList, setSelectedList] = useState(lists[0]);
+    const [selectedBook, setSelectedBook] = useState(lists[0]);
+
     //pages
     const [page, setPage] = useState(1);
     const [numOfPages, setNumOfPages] = useState();
@@ -56,6 +66,12 @@ export default function SearchPage({ books, totalCount }) {
         }
     }, [router.asPath]);
 
+    function addToList(e) {
+        e.preventDefault();
+
+        addBook(selectedBook, selectedList.id);
+    }
+
     return (
         <>
             <Head>
@@ -83,6 +99,7 @@ export default function SearchPage({ books, totalCount }) {
                                     title={book.title}
                                     onFavClick={(e) => {
                                         e.preventDefault();
+                                        setSelectedBook(book);
                                         setIsModalVisible(true);
                                     }}
                                 />
@@ -92,20 +109,45 @@ export default function SearchPage({ books, totalCount }) {
                         <Modal
                             closeModal={() => setIsModalVisible(false)}
                             isOpen={modalVisible}
-                            message="Insert new list name"
+                            message="Choose a list to add the book"
                         >
-                            <FormStyles>
-                                <input
-                                    type="text"
-                                    className="search-input"
-                                    placeholder="List name"
-                                    value={inputName}
-                                    onChange={(e) =>
-                                        setInputName(e.target.value)
+                            <SelectStyles onSubmit={addToList}>
+                                <div
+                                    className="sort"
+                                    onClick={() =>
+                                        setDropdownVisible(!dropdownVisible)
                                     }
-                                />
-                                <ButtonStyles>Add</ButtonStyles>
-                            </FormStyles>
+                                >
+                                    <span className="label">Lists:</span>
+                                    <div className="select">
+                                        <span className="selected">
+                                            {selectedList?.name}
+                                        </span>
+                                        <FaChevronDown className="arrow" />
+                                        {dropdownVisible && (
+                                            <Dropdown
+                                                items={lists}
+                                                onClickOutside={() =>
+                                                    setDropdownVisible(false)
+                                                }
+                                                onItemClick={(item) => {
+                                                    if (
+                                                        item.id !==
+                                                        selectedList.id
+                                                    ) {
+                                                        setSelectedList({
+                                                            id: item.id,
+                                                            name: item.name,
+                                                        });
+                                                    }
+                                                }}
+                                                outsideClickIgnoreClass="select"
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                                <SelectBtn>Add</SelectBtn>
+                            </SelectStyles>
                         </Modal>
                     </>
                 ) : (

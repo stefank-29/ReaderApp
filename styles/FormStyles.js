@@ -1,4 +1,6 @@
+import { ButtonBase } from '@material-ui/core';
 import styled from 'styled-components';
+import ButtonStyles from './ButtonStyles';
 
 const FormStyles = styled.form`
     display: flex;
@@ -22,6 +24,10 @@ const FormStyles = styled.form`
             box-shadow: 0 0 4px 1px #668aff77;
         }
     }
+`;
+
+export const SelectBtn = styled(ButtonStyles)`
+    padding: 0.7rem 2rem;
 `;
 
 export default FormStyles;

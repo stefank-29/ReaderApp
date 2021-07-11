@@ -59,8 +59,13 @@ const InnerStyles = styled.div`
 `;
 
 export default function Page({ children }) {
-    const { modalVisible, inputName, handleNameSubmit, setInputName } =
-        useModal();
+    const {
+        modalVisible,
+        setIsModalVisible,
+        inputName,
+        handleNameSubmit,
+        setInputName,
+    } = useModal();
 
     return (
         <div>
