@@ -70,6 +70,7 @@ export default function SearchPage({ books, totalCount }) {
         e.preventDefault();
 
         addBook(selectedBook, selectedList.id);
+        setIsModalVisible(false);
     }
 
     return (

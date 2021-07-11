@@ -1,9 +1,19 @@
 import { useState, useRef } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import {
+    FaBookmark,
+    FaChevronLeft,
+    FaChevronRight,
+    FaRegBookmark,
+} from 'react-icons/fa';
 import CarouselStyles from '../styles/CarouselStyles';
 import Card from './Card';
 
-export default function Carousel({ items, title }) {
+export default function Carousel({
+    items,
+    title,
+    onBookmarkClick,
+    icon = <FaRegBookmark className="bookmark" onClick={onBookmarkClick} />,
+}) {
     const [translate, setTranslate] = useState(0);
 
     const carouselRef = useRef();
@@ -56,18 +66,18 @@ export default function Carousel({ items, title }) {
                                 key={book.key}
                                 publishYear={null}
                                 title={book.title}
+                                icon={icon}
+                                onFavClick={onBookmarkClick}
                             />
                         ))}
                     </div>
                 </div>
             ) : (
                 <>
-                    <h3 className="info">
-                        You don&apos;t have any saved articles yet
-                    </h3>
+                    <h3 className="info">The list is empty.</h3>
                     <p className="message">
-                        As soon as you see articles that you like, add them to
-                        your wish list! So you won&apos;t miss a sale.
+                        As soon as you see the books you would like to read, add
+                        them to the list!
                     </p>
                 </>
             )}

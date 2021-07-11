@@ -12,12 +12,13 @@ export default function Card({
     publishYear,
     bookKey,
     onFavClick,
+    icon = <FaRegBookmark className="bookmark" onClick={onFavClick} />,
 }) {
     return (
         <Link href={`${bookKey}`} passHref>
             <CardStyles>
                 <div className="container">
-                    <FaRegBookmark className="bookmark" onClick={onFavClick} />
+                    {icon}
                     <div className="image-container">
                         <Image
                             src={coverUrl}

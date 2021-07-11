@@ -1,10 +1,12 @@
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaBookmark } from 'react-icons/fa';
 import Modal from '../components/Modal';
 import ButtonStyles from '../styles/ButtonStyles';
 import FormStyles from '../styles/FormStyles';
 import { useState } from 'react';
 import { useBooks } from '../lib/booksState';
+import Head from 'next/head';
+import Carousel from '../components/Carousel';
 
 const ListsPageStyles = styled.main`
     display: flex;
@@ -40,7 +42,7 @@ export default function Lists() {
     const [modalVisible, setIsModalVisible] = useState(false);
     const [inputName, setInputName] = useState('');
 
-    const { createList } = useBooks();
+    const { lists, createList } = useBooks();
 
     function handleNameSubmit(e) {
         e.preventDefault();
@@ -50,31 +52,56 @@ export default function Lists() {
         setInputName('');
     }
 
+    function removeBook(e) {
+        e.stopPropagation();
+    }
+
     return (
-        <ListsPageStyles>
-            <div className="header">
-                <div className="title">My lists</div>
-                <div className="create" onClick={() => setIsModalVisible(true)}>
-                    <FaPlus className="icon" />
-                    <span className="label">Create list</span>
+        <>
+            <Head>
+                <title>My lists</title>
+            </Head>
+            <ListsPageStyles>
+                <div className="header">
+                    <div className="title">My lists</div>
+                    <div
+                        className="create"
+                        onClick={() => setIsModalVisible(true)}
+                    >
+                        <FaPlus className="icon" />
+                        <span className="label">Create list</span>
+                    </div>
                 </div>
-            </div>
-            <Modal
-                closeModal={() => setIsModalVisible(false)}
-                isOpen={modalVisible}
-                message="Insert new list name"
-            >
-                <FormStyles onSubmit={handleNameSubmit}>
-                    <input
-                        type="text"
-                        className="search-input"
-                        placeholder="List name"
-                        value={inputName}
-                        onChange={(e) => setInputName(e.target.value)}
+                {lists.map((list) => (
+                    <Carousel
+                        items={list.books}
+                        key={list.id}
+                        title={list.name}
+                        icon={
+                            <FaBookmark
+                                className="bookmark"
+                                onClick={removeBook}
+                            />
+                        }
                     />
-                    <ButtonStyles>Add</ButtonStyles>
-                </FormStyles>
-            </Modal>
-        </ListsPageStyles>
+                ))}
+                <Modal
+                    closeModal={() => setIsModalVisible(false)}
+                    isOpen={modalVisible}
+                    message="Insert new list name"
+                >
+                    <FormStyles onSubmit={handleNameSubmit}>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="List name"
+                            value={inputName}
+                            onChange={(e) => setInputName(e.target.value)}
+                        />
+                        <ButtonStyles>Add</ButtonStyles>
+                    </FormStyles>
+                </Modal>
+            </ListsPageStyles>
+        </>
     );
 }
