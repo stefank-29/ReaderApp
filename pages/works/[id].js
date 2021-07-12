@@ -3,12 +3,17 @@ import Head from 'next/head';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
-import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark, FaChevronDown } from 'react-icons/fa';
 import styled from 'styled-components';
 import ImageStyles from '../../styles/ImageStyles';
 import { InfoStyles } from '../../styles/InfoStyles';
 import ButtonStyles from '../../styles/ButtonStyles';
 import Link from 'next/link';
+import Dropdown from '../../components/Dropdown';
+import { SelectBtn } from '../../styles/FormStyles';
+import SelectStyles from '../../styles/SelectStyles';
+import Modal from '../../components/Modal';
+import { useBooks } from '../../lib/booksState';
 
 const DetailsPageStyles = styled.div`
     width: 100%;
@@ -24,8 +29,17 @@ export default function BookDetails({
     imageUrl,
     publishDate,
 }) {
+    // description show more
     const [isOverflowing, setIsOverflowing] = useState(false);
     const [showMore, setShowMore] = useState(false);
+
+    const { lists, addBook } = useBooks();
+
+    // modal
+    const [modalVisible, setIsModalVisible] = useState(false);
+    const [inputName, setInputName] = useState('');
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [selectedList, setSelectedList] = useState(lists[0]);
 
     const detailsRef = useRef();
 
@@ -37,6 +51,16 @@ export default function BookDetails({
 
     function handleOverflow() {
         setShowMore(!showMore);
+    }
+
+    function addToList(e) {
+        e.preventDefault();
+
+        addBook(
+            { key: id, title, description, authors, imageUrl, publishDate },
+            selectedList.id
+        );
+        setIsModalVisible(false);
     }
 
     return (
@@ -106,6 +130,11 @@ export default function BookDetails({
                                         </div>
                                     )}
                                 </div>
+                                <ButtonStyles
+                                    onClick={() => setIsModalVisible(true)}
+                                >
+                                    Add to list
+                                </ButtonStyles>
                             </div>
                         </div>
                         <div className="description">{description}</div>
@@ -117,6 +146,44 @@ export default function BookDetails({
                     )}
                 </InfoStyles>
             </DetailsPageStyles>
+            <Modal
+                closeModal={() => setIsModalVisible(false)}
+                isOpen={modalVisible}
+                message="Choose a list to add the book"
+            >
+                <SelectStyles onSubmit={addToList}>
+                    <div
+                        className="sort"
+                        onClick={() => setDropdownVisible(!dropdownVisible)}
+                    >
+                        <span className="label">Lists:</span>
+                        <div className="select">
+                            <span className="selected">
+                                {selectedList?.name}
+                            </span>
+                            <FaChevronDown className="arrow" />
+                            {dropdownVisible && (
+                                <Dropdown
+                                    items={lists}
+                                    onClickOutside={() =>
+                                        setDropdownVisible(false)
+                                    }
+                                    onItemClick={(item) => {
+                                        if (item.id !== selectedList.id) {
+                                            setSelectedList({
+                                                id: item.id,
+                                                name: item.name,
+                                            });
+                                        }
+                                    }}
+                                    outsideClickIgnoreClass="select"
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <SelectBtn>Add</SelectBtn>
+                </SelectStyles>
+            </Modal>
         </>
     );
 }

@@ -14,6 +14,7 @@ export default function Carousel({
     title,
     onBookmarkClick,
     onTimesClick,
+    isMyList = false,
     icon = <FaRegBookmark className="bookmark" />,
 }) {
     const [translate, setTranslate] = useState(0);
@@ -45,9 +46,11 @@ export default function Carousel({
     return (
         <CarouselStyles translate={translate}>
             <h1 className="title">{title}</h1>
-            <div className="times" onClick={onTimesClick}>
-                <FaTimes />
-            </div>
+            {isMyList && (
+                <div className="times" onClick={onTimesClick}>
+                    <FaTimes />
+                </div>
+            )}
             {items.length > 0 ? (
                 <div className="container">
                     <div className="arrow left" onClick={moveLeft}>
@@ -66,7 +69,9 @@ export default function Carousel({
                                 coverUrl={
                                     book.covers !== undefined
                                         ? `http://covers.openlibrary.org/b/id/${book.covers[0]}.jpg`
-                                        : '/open-book.png'
+                                        : book.cover_i !== undefined
+                                        ? `http://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
+                                        : `${book.imageUrl}`
                                 }
                                 key={book.key}
                                 publishYear={null}

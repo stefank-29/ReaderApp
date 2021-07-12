@@ -91,6 +91,7 @@ export default function Lists() {
                         key={list.id}
                         title={list.name}
                         icon={<FaBookmark className="bookmark" />}
+                        isMyList={true}
                         onBookmarkClick={(e, bookKey) => {
                             removeFromList(e, list.id, bookKey);
                         }}
