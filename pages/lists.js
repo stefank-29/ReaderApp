@@ -3,7 +3,7 @@ import { FaPlus, FaBookmark } from 'react-icons/fa';
 import Modal from '../components/Modal';
 import ButtonStyles from '../styles/ButtonStyles';
 import FormStyles from '../styles/FormStyles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useBooks } from '../lib/booksState';
 import Head from 'next/head';
 import Carousel from '../components/Carousel';
@@ -42,18 +42,32 @@ export default function Lists() {
     const [modalVisible, setIsModalVisible] = useState(false);
     const [inputName, setInputName] = useState('');
 
-    const { lists, createList } = useBooks();
+    // all lists from local storage
+    const [myLists, setMyLists] = useState([]);
+
+    const { lists, createList, removeBook } = useBooks();
+
+    useEffect(() => {
+        setMyLists(lists);
+    }, []);
+
+    useEffect(() => {
+        setMyLists(lists);
+    }, [lists]);
 
     function handleNameSubmit(e) {
         e.preventDefault();
 
         createList(inputName);
+        setMyLists(lists);
         setIsModalVisible(false);
         setInputName('');
     }
 
-    function removeBook(e) {
+    function removeFromList(e, listId, bookId) {
         e.stopPropagation();
+
+        removeBook(bookId, listId);
     }
 
     return (
@@ -72,17 +86,15 @@ export default function Lists() {
                         <span className="label">Create list</span>
                     </div>
                 </div>
-                {lists.map((list) => (
+                {myLists.map((list) => (
                     <Carousel
                         items={list.books}
                         key={list.id}
                         title={list.name}
-                        icon={
-                            <FaBookmark
-                                className="bookmark"
-                                onClick={removeBook}
-                            />
-                        }
+                        icon={<FaBookmark className="bookmark" />}
+                        onBookmarkClick={(e, bookKey) => {
+                            removeFromList(e, list.id, bookKey);
+                        }}
                     />
                 ))}
                 <Modal

@@ -12,7 +12,7 @@ export default function Carousel({
     items,
     title,
     onBookmarkClick,
-    icon = <FaRegBookmark className="bookmark" onClick={onBookmarkClick} />,
+    icon = <FaRegBookmark className="bookmark" />,
 }) {
     const [translate, setTranslate] = useState(0);
 

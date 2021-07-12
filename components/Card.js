@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import Link from 'next/link';
 import { PropTypes } from 'prop-types';
+import { onClickOutside } from 'react-onclickoutside';
 
 export default function Card({
     title,
@@ -18,7 +19,7 @@ export default function Card({
         <Link href={`${bookKey}`} passHref>
             <CardStyles>
                 <div className="container">
-                    {icon}
+                    <div onClick={(e) => onFavClick(e, bookKey)}>{icon}</div>
                     <div className="image-container">
                         <Image
                             src={coverUrl}
