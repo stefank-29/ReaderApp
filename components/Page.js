@@ -26,6 +26,8 @@ const GlobalStyles = createGlobalStyle`
         --darkestRed:#451e3e;
         --darkerRed: #651e3e;
         --red: #851e3e;
+        --lightRed: #ff3333;
+        --green: #00e600;
     }
 
     body{

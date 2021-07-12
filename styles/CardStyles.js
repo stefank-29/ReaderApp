@@ -70,6 +70,23 @@ const CardStyles = styled.div`
                 height: 1.6rem;
                 font-size: 1.2rem;
             }
+            .read {
+                display: flex;
+                align-items: center;
+                font-size: 2rem;
+                z-index: 3;
+                .read-label {
+                    margin-right: 0.6rem;
+                }
+                .icon {
+                    color: var(--lightRed);
+                }
+                &.check {
+                    .icon {
+                        color: var(--green);
+                    }
+                }
+            }
         }
     }
 `;

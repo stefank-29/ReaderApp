@@ -45,7 +45,8 @@ export default function Lists() {
     // all lists from local storage
     const [myLists, setMyLists] = useState([]);
 
-    const { lists, createList, removeBook, removeList } = useBooks();
+    const { lists, createList, removeBook, removeList, toggleReadStatus } =
+        useBooks();
 
     useEffect(() => {
         setMyLists(lists);
@@ -67,6 +68,12 @@ export default function Lists() {
         e.stopPropagation();
 
         removeBook(bookId, listId);
+    }
+
+    function toggleRead(e, listId, bookId) {
+        e.stopPropagation();
+
+        toggleReadStatus(bookId, listId);
     }
 
     return (
@@ -92,10 +99,14 @@ export default function Lists() {
                         title={list.name}
                         icon={<FaBookmark className="bookmark" />}
                         isMyList={true}
+                        haveReadCheck={true}
                         onBookmarkClick={(e, bookKey) => {
                             removeFromList(e, list.id, bookKey);
                         }}
                         onTimesClick={() => removeList(list.id)}
+                        onReadClick={(e, bookKey) => {
+                            toggleRead(e, list.id, bookKey);
+                        }}
                     />
                 ))}
                 <Modal

@@ -14,7 +14,9 @@ export default function Carousel({
     title,
     onBookmarkClick,
     onTimesClick,
+    onReadClick,
     isMyList = false,
+    haveReadCheck = false,
     icon = <FaRegBookmark className="bookmark" />,
 }) {
     const [translate, setTranslate] = useState(0);
@@ -79,7 +81,10 @@ export default function Carousel({
                                 publishYear={null}
                                 title={book.title}
                                 icon={icon}
+                                haveReadCheck={haveReadCheck}
+                                isRead={book.read}
                                 onFavClick={onBookmarkClick}
+                                onReadClick={onReadClick}
                             />
                         ))}
                     </div>
