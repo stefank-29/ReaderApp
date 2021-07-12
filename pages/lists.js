@@ -45,7 +45,7 @@ export default function Lists() {
     // all lists from local storage
     const [myLists, setMyLists] = useState([]);
 
-    const { lists, createList, removeBook } = useBooks();
+    const { lists, createList, removeBook, removeList } = useBooks();
 
     useEffect(() => {
         setMyLists(lists);
@@ -59,7 +59,6 @@ export default function Lists() {
         e.preventDefault();
 
         createList(inputName);
-        setMyLists(lists);
         setIsModalVisible(false);
         setInputName('');
     }
@@ -95,6 +94,7 @@ export default function Lists() {
                         onBookmarkClick={(e, bookKey) => {
                             removeFromList(e, list.id, bookKey);
                         }}
+                        onTimesClick={() => removeList(list.id)}
                     />
                 ))}
                 <Modal

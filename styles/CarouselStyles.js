@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const CarouselStyles = styled.div`
     position: relative;
-    margin: 5rem 0;
+    margin: 2rem 0;
     padding: 0rem 2.5rem;
     background-color: #fefefe;
     .title {
@@ -17,6 +17,14 @@ const CarouselStyles = styled.div`
     .message {
         font-size: 1.8rem;
     }
+    .times {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        font-size: 2.5rem;
+        cursor: pointer;
+    }
+
     .container {
         width: 100%;
         overflow-x: hidden;

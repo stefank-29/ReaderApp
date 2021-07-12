@@ -4,6 +4,7 @@ import {
     FaChevronLeft,
     FaChevronRight,
     FaRegBookmark,
+    FaTimes,
 } from 'react-icons/fa';
 import CarouselStyles from '../styles/CarouselStyles';
 import Card from './Card';
@@ -12,6 +13,7 @@ export default function Carousel({
     items,
     title,
     onBookmarkClick,
+    onTimesClick,
     icon = <FaRegBookmark className="bookmark" />,
 }) {
     const [translate, setTranslate] = useState(0);
@@ -43,6 +45,9 @@ export default function Carousel({
     return (
         <CarouselStyles translate={translate}>
             <h1 className="title">{title}</h1>
+            <div className="times" onClick={onTimesClick}>
+                <FaTimes />
+            </div>
             {items.length > 0 ? (
                 <div className="container">
                     <div className="arrow left" onClick={moveLeft}>
