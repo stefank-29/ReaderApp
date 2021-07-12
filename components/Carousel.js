@@ -71,7 +71,9 @@ export default function Carousel({
                                         ? `http://covers.openlibrary.org/b/id/${book.covers[0]}.jpg`
                                         : book.cover_i !== undefined
                                         ? `http://covers.openlibrary.org/b/id/${book.cover_i}.jpg`
-                                        : `${book.imageUrl}`
+                                        : book.imageUrl !== undefined
+                                        ? `${book.imageUrl}`
+                                        : '/open-book.png'
                                 }
                                 key={book.key}
                                 publishYear={null}
