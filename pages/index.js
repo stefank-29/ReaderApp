@@ -11,6 +11,11 @@ const HomeStyles = styled.main`
     width: 100%;
     display: flex;
     flex-direction: column;
+    .title {
+        font-size: 5rem;
+        margin: 4rem 0 2rem;
+        font-family: 'Courgette', cursive;
+    }
 `;
 
 export default function HomePage() {
@@ -41,6 +46,7 @@ export default function HomePage() {
                 <title>My library</title>
             </Head>
             <HomeStyles>
+                <div className="title">My library</div>
                 <FormStyles onSubmit={handleSubmit}>
                     <input
                         className="search-input"

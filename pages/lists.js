@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useBooks } from '../lib/booksState';
 import Head from 'next/head';
 import Carousel from '../components/Carousel';
+import Message from '../components/Message';
 
 const ListsPageStyles = styled.main`
     display: flex;
@@ -92,23 +93,33 @@ export default function Lists() {
                         <span className="label">Create list</span>
                     </div>
                 </div>
-                {myLists.map((list) => (
-                    <Carousel
-                        items={list.books}
-                        key={list.id}
-                        title={list.name}
-                        icon={<FaBookmark className="bookmark" />}
-                        isMyList={true}
-                        haveReadCheck={true}
-                        onBookmarkClick={(e, bookKey) => {
-                            removeFromList(e, list.id, bookKey);
-                        }}
-                        onTimesClick={() => removeList(list.id)}
-                        onReadClick={(e, bookKey) => {
-                            toggleRead(e, list.id, bookKey);
-                        }}
-                    />
-                ))}
+                {myLists.length > 0 ? (
+                    myLists.map((list) => (
+                        <Carousel
+                            items={list.books}
+                            key={list.id}
+                            title={list.name}
+                            icon={<FaBookmark className="bookmark" />}
+                            isMyList={true}
+                            haveReadCheck={true}
+                            onBookmarkClick={(e, bookKey) => {
+                                removeFromList(e, list.id, bookKey);
+                            }}
+                            onTimesClick={() => removeList(list.id)}
+                            onReadClick={(e, bookKey) => {
+                                toggleRead(e, list.id, bookKey);
+                            }}
+                        />
+                    ))
+                ) : (
+                    <Message
+                        header="You don't have any lists yet"
+                        info="As soon as you see book that you like, add them to your list! "
+                        buttonText="LET'S START LOOKING"
+                        imageUrl="/empty.svg"
+                        buttonRoute="/"
+                    ></Message>
+                )}
                 <Modal
                     closeModal={() => setIsModalVisible(false)}
                     isOpen={modalVisible}

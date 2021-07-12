@@ -26,7 +26,7 @@ export default function Card({
     return (
         <Link href={`${bookKey}`} passHref>
             <CardStyles>
-                <div className="container">
+                <div className={`container ${isRead ? 'checked' : ''}`}>
                     <div
                         onClick={(e) =>
                             onFavClick(

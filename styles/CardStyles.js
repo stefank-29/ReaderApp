@@ -15,6 +15,9 @@ const CardStyles = styled.div`
         :hover {
             box-shadow: 0 0 7px 3px rgba(0, 0, 0, 0.2);
         }
+        &.checked {
+            box-shadow: 0 0 7px 3px rgba(0, 230, 0, 0.5);
+        }
         .bookmark {
             position: absolute;
             top: 1.5rem;

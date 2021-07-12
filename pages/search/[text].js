@@ -15,6 +15,7 @@ import FormStyles from '../../styles/FormStyles';
 import SearchHeaderStyles from '../../styles/SearchHeaderStyles';
 import { SelectBtn } from '../../styles/FormStyles';
 import SelectStyles from '../../styles/SelectStyles';
+import Message from '../../components/Message';
 
 const SearchPageStyles = styled.main`
     width: 100%;
@@ -34,7 +35,7 @@ export default function SearchPage({ books, totalCount }) {
     const { lists, addBook } = useBooks();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [selectedList, setSelectedList] = useState(lists[0]);
-    const [selectedBook, setSelectedBook] = useState(lists[0]);
+    const [selectedBook, setSelectedBook] = useState();
 
     //pages
     const [page, setPage] = useState(1);
@@ -65,6 +66,10 @@ export default function SearchPage({ books, totalCount }) {
             }
         }
     }, [router.asPath]);
+
+    useEffect(() => {
+        setSelectedList(lists[0]);
+    }, [lists]);
 
     function addToList(e) {
         e.preventDefault();
@@ -152,7 +157,12 @@ export default function SearchPage({ books, totalCount }) {
                         </Modal>
                     </>
                 ) : (
-                    <p>No results</p>
+                    <Message
+                        buttonRoute="/"
+                        buttonText="Return to Home"
+                        header={`Sorry, we can't find anything for "${router.query.text}"`}
+                        imageUrl="/not-found.png"
+                    />
                 )}
             </SearchPageStyles>
         </>
